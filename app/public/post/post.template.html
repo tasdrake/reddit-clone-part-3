@@ -1,0 +1,109 @@
+
+<main class="container">
+
+  <div class="pull-right">
+    <p><a class="btn btn-info" ng-click="$ctrl.togglePost()">New Post</a></p>
+  </div>
+
+  <ul class="nav nav-pills">
+    <li role="presentation" class="active">
+      <input type="search" class="form-control input-sm search-form" placeholder="Filter" ng-model="query">
+    </li>
+    <li class="dropdown form-inline" ng-init="sort='votes' ; sortName='Votes'">
+       <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Sort By {{$ctrl.sortName}}<span class="caret"></span></a>
+       <ul class="dropdown-menu">
+         <li><a ng-click="$ctrl.sort='vote_count'; $ctrl.sortName='Votes'">Votes</a></li>
+         <li><a ng-click="$ctrl.sort='date'; $ctrl.sortName='Date'">Date</a></li>
+         <li><a ng-click="$ctrl.sort='title'; $ctrl.sortName='Title'">Title</a></li>
+       </ul>
+     </li>
+  </ul>
+
+    <div class="row">
+      <div class="col-md-8">
+
+        <form ng-if="$ctrl.postOpen" ng-submit="$ctrl.postMessage()" name="$ctrl.postForm" novalidate>
+
+          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.title.$invalid && $ctrl.postForm.title.$touched, 'valid': $ctrl.postForm.title.$valid}">
+            <label for="title" class="control-label">Title</label>
+            <input id="title" class="form-control" name="title" ng-model="$ctrl.post.title" ng-minlength="3" required>
+            <span ng-show="$ctrl.postForm.title.$invalid && $ctrl.postForm.title.$touched" class="red">Title is invalid</span>
+          </div>
+
+          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.body.$invalid && $ctrl.postForm.body.$touched, 'valid': $ctrl.postForm.body.$valid}">
+            <label for="body" class="control-label">Body</label>
+            <textarea id="body" class="form-control" name="body" ng-model="$ctrl.post.body" ng-minlength="3" required></textarea>
+            <span ng-show="$ctrl.postForm.body.$invalid && $ctrl.postForm.body.$touched" class="red">Body is invalid</span>
+          </div>
+          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.author.$invalid && $ctrl.postForm.author.$touched, 'valid': $ctrl.postForm.author.$valid}">
+            <label for="author" class="control-label">Author</label>
+            <input id="author" class="form-control" name="author" ng-model="$ctrl.post.author" ng-minlength="3" required>
+            <span ng-show="$ctrl.postForm.author.$invalid && $ctrl.postForm.author.$touched" class="red">Author is invalid</span>
+          </div>
+          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.imageUrl.$invalid && $ctrl.postForm.imageUrl.$touched, 'valid': $ctrl.postForm.imageUrl.$valid}">
+            <label for="imageUrl" class="control-label">Image URL</label>
+            <input id="imageUrl" class="form-control" name="imageUrl" ng-model="$ctrl.post.image_url" ng-minlength="3" required>
+            <span ng-show="$ctrl.postForm.imageUrl.$invalid && $ctrl.postForm.imageUrl.$touched" class="red">Image URL is invalid</span>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" ng-disabled="$ctrl.postForm.$invalid">
+            Create Post
+          </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+    <div class="row" ng-repeat="post in $ctrl.posts | filter: query | orderBy: $ctrl.sort">
+      <div class="col-md-12">
+
+        <div class="well">
+          <div class="media-left">
+            <img class="media-object" ng-src="{{post.image_url}}">
+            <a ui-sref="edit({id: post.id})" class="center">edit</a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">
+            {{post.title}}
+            |
+            <a><i class="glyphicon glyphicon-arrow-up" ng-click="$ctrl.increase(post)"></i></a>
+            <a><i class="glyphicon glyphicon-arrow-down" ng-click="$ctrl.decrease(post)"></i></a>
+            {{post.vote_count}}
+          </h4>
+            <div class="text-right">
+              {{post.author}}
+            </div>
+            <p>
+              {{post.body}}
+            </p>
+            <div>
+              <span am-time-ago="post.created_at"></span> |
+              <i class="glyphicon glyphicon-comment"></i>
+              <a ng-click="$ctrl.toggleComments(post)">
+                <ng-pluralize count="post.comments.length" when="{1: '1 Comment', other: '{} Comments'}">
+                </ng-pluralize>
+              </a>
+            </div>
+            <div class="row" ng-if="post.commentOpen">
+              <div class="col-md-offset-1">
+                <hr>
+                <p ng-repeat="comment in post.comments">
+                  {{comment.content}}
+                </p>
+                <form class="form-inline" ng-submit="$ctrl.postComment(post)">
+                  <div class="form-group">
+                    <input class="form-control" ng-model="$ctrl.post.comment">
+                  </div>
+                  <div class="form-group">
+                    <input type="submit" class="btn btn-primary">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+</main>

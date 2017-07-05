@@ -1,0 +1,26 @@
+.media-object {
+  max-width: 200px;
+}
+
+[ng-click] {
+  cursor: pointer;
+}
+
+.search-form {
+  margin-top: 4px;
+}
+
+main.container {
+  margin-bottom: 4em;
+}
+.red {
+ color: #A94442;
+}
+
+.valid {
+  color: green;
+}
+
+.center {
+  margin-left: 85px;
+}
