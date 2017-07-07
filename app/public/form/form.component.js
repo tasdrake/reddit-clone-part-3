@@ -1,7 +1,7 @@
 (function () {
   angular.module('app')
-    .component('edit', {
-      templateUrl: '/edit/edit.template.html',
+    .component('postForm', {
+      templateUrl: '/form/form.template.html',
       controller: Controller
     });
 
@@ -9,8 +9,10 @@
     function Controller($http, $stateParams) {
         const vm = this;
         vm.$onInit = () => {
-          $http.get('/api/posts/' + $stateParams.id)
+          if ($stateParams.id) {
+            $http.get('/api/posts/' + $stateParams.id)
             .then((res) => vm.post = res.data);
+          }
         };
 
         vm.editMessage = () => {

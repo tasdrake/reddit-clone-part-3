@@ -16,9 +16,9 @@
         component: 'posts'
       })
       .state({
-        name: 'edit',
+        name: 'postForm',
         url: '/posts/:id/edit',
-        component: 'edit'
+        component: 'postForm'
       });
   }
 }());

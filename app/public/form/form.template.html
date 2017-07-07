@@ -1,7 +1,4 @@
-<h1>{{$ctrl.post.title}}</h1>
-
 <form ng-submit="$ctrl.editMessage()" name="$ctrl.postForm" novalidate>
-
   <div class="form-group" ng-class="{'has-error': $ctrl.postForm.title.$invalid && $ctrl.postForm.title.$touched, 'valid': $ctrl.postForm.title.$valid}">
     <label for="title" class="control-label">Title</label>
     <input id="title" class="form-control" name="title" ng-model="$ctrl.post.title" ng-minlength="3" required value="{{$ctrl.post.title}}">
