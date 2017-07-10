@@ -20,7 +20,7 @@
 
   <div class="row">
     <div class="col-md-8" ng-if="$ctrl.postOpen">
-      <post-form></post-form>
+      <post-form posts="$ctrl.posts" buttonname="Create Post" open="$ctrl.postOpen"></post-form>
     </div>
   </div>
   <div ng-repeat="post in $ctrl.posts | filter: query | orderBy: $ctrl.sort">

@@ -2,28 +2,32 @@
   angular.module('app')
     .component('postForm', {
       templateUrl: '/form/form.template.html',
-      controller: Controller
+      controller: Controller,
+      bindings: { buttonname: '@', posts: '=', open: '='}
     });
+    Controller.$inject = ['$stateParams', '$state', 'postService'];
 
-    Controller.$inject = ['$http', '$stateParams'];
-    function Controller($http, $stateParams) {
-        const vm = this;
-        vm.$onInit = () => {
-          if ($stateParams.id) {
-            $http.get('/api/posts/' + $stateParams.id)
-            .then((res) => vm.post = res.data);
-          }
-        };
-
-        vm.editMessage = () => {
-          $http.patch('/api/posts/' + vm.post.id, vm.post)
-            .then(() => {
-              $http.get('/api/posts')
-                .then(res => vm.posts = res.data);
-            });
-
-          delete vm.post;
-        };
+        function Controller($stateParams, $state, postService) {
+          const vm = this;
+          vm.$onInit = () => {
+            if ($stateParams.id) {
+              postService.get($stateParams.id)
+                .then(post => vm.post = post);
+            }
+          };
+          vm.submitpost = () => {
+            if ($stateParams.id) {
+              postService.patch(vm.post.id, vm.post)
+                .then(() => $state.go('posts'));
+            } else {
+              postService.post(vm.post)
+                .then((post) => {
+                  post.comments = [];
+                  vm.posts.push(post);
+                });
+                vm.open = false;
+            }
+          };
 
     }
 })();
