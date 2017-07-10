@@ -6,43 +6,26 @@
       bindings: { post: '=' }
   });
 
-  Controller.$inject = ['$http', '$state'];
-  function Controller($http, $state) {
-    const vm = this;
+  Controller.$inject = ['$state', 'postService'];
+    function Controller($state, postService) {
+      const vm = this;
 
-    vm.decrease = (post) => {
-      if (post.votes > 0) {
-        post.votes--;
-      }
-      $http.patch('/api/posts/' + post.id, post)
-        .then(() => {
-          $http.get('/api/posts')
-            .then(res => vm.posts = res.data);
-        });
-    };
-    vm.increase = (post) => {
-      post.vote_count++;
-      const body = {
-        title: post.title,
-        body: post.body,
-        vote_count: post.vote_count,
-        id: post.id,
-        author: post.author,
-        image_url: post.image_url
+      vm.decrease = () => {
+        if (vm.post.vote_count > 0) {
+          vm.post.vote_count--;
+          postService.deleteComment(vm.post.id);
+        }
       };
-
-      $http.patch('/api/posts/' + post.id, body)
-        .then(() => {
-          $http.get('/api/posts')
-            .then(res => vm.posts = res.data);
-        });
-    };
-    vm.toggleComments = () => {
-      if (vm.commentOpen) {
-        vm.commentOpen = false;
-      } else {
-        vm.commentOpen = true;
-      }
-    };
-  }
+      vm.increase = () => {
+        vm.post.vote_count++;
+        postService.postComment(vm.post.id);
+      };
+      vm.toggleComments = () => {
+        if (vm.commentOpen) {
+          vm.commentOpen = false;
+        } else {
+          vm.commentOpen = true;
+        }
+      };
+    }
 })();

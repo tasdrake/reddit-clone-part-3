@@ -19,37 +19,9 @@
   </ul>
 
   <div class="row">
-    <div class="col-md-8">
-      <form ng-if="$ctrl.postOpen" ng-submit="$ctrl.postMessage()" name="$ctrl.postForm" novalidate>
-
-          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.title.$invalid && $ctrl.postForm.title.$touched, 'valid': $ctrl.postForm.title.$valid}">
-            <label for="title" class="control-label">Title</label>
-            <input id="title" class="form-control" name="title" ng-model="$ctrl.post.title" ng-minlength="3" required>
-            <span ng-show="$ctrl.postForm.title.$invalid && $ctrl.postForm.title.$touched" class="red">Title is invalid</span>
-          </div>
-
-          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.body.$invalid && $ctrl.postForm.body.$touched, 'valid': $ctrl.postForm.body.$valid}">
-            <label for="body" class="control-label">Body</label>
-            <textarea id="body" class="form-control" name="body" ng-model="$ctrl.post.body" ng-minlength="3" required></textarea>
-            <span ng-show="$ctrl.postForm.body.$invalid && $ctrl.postForm.body.$touched" class="red">Body is invalid</span>
-          </div>
-          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.author.$invalid && $ctrl.postForm.author.$touched, 'valid': $ctrl.postForm.author.$valid}">
-            <label for="author" class="control-label">Author</label>
-            <input id="author" class="form-control" name="author" ng-model="$ctrl.post.author" ng-minlength="3" required>
-            <span ng-show="$ctrl.postForm.author.$invalid && $ctrl.postForm.author.$touched" class="red">Author is invalid</span>
-          </div>
-          <div class="form-group" ng-class="{'has-error': $ctrl.postForm.imageUrl.$invalid && $ctrl.postForm.imageUrl.$touched, 'valid': $ctrl.postForm.imageUrl.$valid}">
-            <label for="imageUrl" class="control-label">Image URL</label>
-            <input id="imageUrl" class="form-control" name="imageUrl" ng-model="$ctrl.post.image_url" ng-minlength="3" required>
-            <span ng-show="$ctrl.postForm.imageUrl.$invalid && $ctrl.postForm.imageUrl.$touched" class="red">Image URL is invalid</span>
-          </div>
-          <div class="form-group">
-            <button type="submit" class="btn btn-primary" ng-disabled="$ctrl.postForm.$invalid">
-            Create Post
-          </button>
-          </div>
-        </form>
-      </div>
+    <div class="col-md-8" ng-if="$ctrl.postOpen">
+      <post-form posts="$ctrl.posts" buttonname="Create Post" open="$ctrl.postOpen"></post-form>
+    </div>
   </div>
   <div ng-repeat="post in $ctrl.posts | filter: query | orderBy: $ctrl.sort">
     <single-post post="post"></single-post>

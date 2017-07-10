@@ -13,12 +13,17 @@
       .state({
         name: 'posts',
         url: '/',
-        component: 'posts'
+        component: 'posts',
       })
       .state({
-        name: 'edit',
-        url: '/posts/:id/edit',
-        component: 'edit'
+        name: 'postForm',
+        url: '/:id',
+        component: 'postForm',
+        resolve: {
+          buttonname: function () {
+            return 'Update Post';
+          }
+        }
       });
   }
 }());

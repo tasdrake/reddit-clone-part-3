@@ -5,12 +5,12 @@
       controller: Controller,
       bindings: { post: '=' }
   });
-  Controller.$inject = ['$http', '$state'];
-  function Controller($http, $state) {
+  Controller.$inject = ['$http', '$state', 'postService'];
+  function Controller($http, $state, postService) {
     const vm = this;
     vm.postComment = () => {
-      $http.post('api/posts/' + vm.post.id + '/comments', { content: vm.comment })
-        .then(res => vm.post.comments.push(res.data));
+      postService.postComments(vm.post.id, vm.comment)
+        .then(comment => vm.post.comments.push(comment));
       delete vm.comment;
     };
   }
